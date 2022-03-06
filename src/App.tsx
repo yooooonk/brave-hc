@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -16,6 +16,12 @@ const Section = styled.section`
 const Lists = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const AddedItem = styled.span`
+  background-color: white;
+  border-radius: 1rem;
+  cursor: pointer;
 `;
 
 interface Item {
@@ -61,6 +67,21 @@ function App() {
     setAddLists([...addLists, newOrder]);
     setSumPrice((prev) => prev + totalPrice);
   };
+
+  const removeItem = (item: AddedItem) => {
+    console.log(item.id);
+    console.log(addLists);
+    const removedList = addLists.filter((prevItem) => prevItem.id !== item.id);
+    console.log(removedList);
+
+    setAddLists(removedList);
+    setSumPrice((prev) => prev - item.totalPrice);
+  };
+  //
+  // useEffect(() => {
+  //   const totalPrice = addLists.reduce((acc) => acc + item.totalPrice);
+  //   setSumPrice();
+  // }, [addLists]);
   return (
     <Container>
       <Section>
@@ -71,7 +92,7 @@ function App() {
 
         <Lists>
           {lists.map((item) => {
-            return <span>{item.name}</span>;
+            return <span key={item.id}>{item.name}</span>;
           })}
         </Lists>
       </Section>
@@ -79,9 +100,9 @@ function App() {
         <Lists>
           {addLists.map((item) => {
             return (
-              <span>
+              <AddedItem key={item.id} onClick={(e) => removeItem(item)}>
                 {item.name} {item.orderWeight} {item.totalPrice}
-              </span>
+              </AddedItem>
             );
           })}
           <span>{sumPrice}</span>
