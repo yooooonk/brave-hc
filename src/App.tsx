@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { makeDataList } from './db';
 import { Herb, AddedHerb } from './types';
 import { calculatePrice, convertNumberFormat } from './util';
+import { FcLock, FcLike } from 'react-icons/fc';
 
 function App() {
   const [herbList, setHerbList] = useState<Herb[]>([]);
@@ -19,7 +20,6 @@ function App() {
 
     const data = await makeDataList(file[0]);
     setHerbList(data);
-    console.log(data);
   };
 
   // TODO : lodash 이용하기
@@ -75,19 +75,34 @@ function App() {
 
   return (
     <Container>
-      <Section>
-        <InputSection>
-          <FileButton htmlFor='input-file'>약재 불러오기</FileButton>
-          <input
-            type='file'
-            accept='.xlsx, .xlsb, .xlsm, .xls, .xml'
-            onChange={(e) => handleFile(e.currentTarget.files)}
-            id='input-file'
-            style={{ display: 'none' }}
-          />
+      <LeftSection>
+        <FileLabel htmlFor='input-file'>
+          Load Data {herbList.length === 0 ? <FcLock /> : <FcLike />}
+        </FileLabel>
 
-          <input type={'text'} onChange={searchItems} ref={nameInput} />
-          <input type={'text'} onKeyUp={enterWeight} ref={weightInput} />
+        <input
+          type='file'
+          accept='.xlsx, .xlsb, .xlsm, .xls, .xml'
+          onChange={(e) => handleFile(e.currentTarget.files)}
+          id='input-file'
+          style={{ display: 'none' }}
+        />
+
+        <InputSection>
+          <TextInput
+            disabled={herbList.length === 0}
+            type={'text'}
+            onChange={searchItems}
+            ref={nameInput}
+            placeholder='약재이름'
+          />
+          <TextInput
+            disabled={herbList.length === 0}
+            type={'text'}
+            onKeyUp={enterWeight}
+            ref={weightInput}
+            placeholder='용량'
+          />
         </InputSection>
         <HerbListSection>
           {searchItem.map((item) => {
@@ -98,7 +113,7 @@ function App() {
             );
           })}
         </HerbListSection>
-      </Section>
+      </LeftSection>
       <RightSection>
         <TotalPriceCard>
           <span>₩ {convertNumberFormat(sumPrice)}원</span>
@@ -140,25 +155,70 @@ const Container = styled.div`
 const Section = styled.section`
   box-sizing: inherit;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   flex-direction: column;
+`;
+
+const LeftSection = styled(Section)`
+  align-self: center;
+  justify-self: center;
+  width: 60%;
+  height: 90%;
+`;
+
+const FileLabel = styled.label`
+  background-color: #b45d7a;
+  color: white;
+  border-radius: 0.5rem;
+  height: 35px;
+  text-align: center;
+  box-shadow: 4px 6px 14px 1px rgba(0, 0, 0, 0.3);
+
+  cursor: pointer;
+  font-family: 'Gowun Batang', serif;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const InputSection = styled.div`
+  width: 100%;
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0rem 1rem 0;
+`;
+
+const TextInput = styled.input`
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.75rem;
+  width: 40%;
 `;
 
 const HerbListSection = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: white;
-`;
+  background-color: #f8f6f5;
+  width: 100%;
+  height: 35rem;
+  overflow-y: scroll;
 
-const InputSection = styled.div``;
+  &: {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 
-const FileButton = styled.label`
-  background-color: #d2cdb6;
-  color: white;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
   border-radius: 1rem;
-  width: 900px;
+  box-shadow: 6px 10px 23px 0px rgba(0, 0, 0, 0.25);
 `;
+
+const HerbItem = styled.div``;
 
 const RightSection = styled(Section)`
   background: linear-gradient(
