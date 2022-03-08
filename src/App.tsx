@@ -94,7 +94,7 @@ function App() {
             type={'text'}
             onChange={searchItems}
             ref={nameInput}
-            placeholder='약재이름'
+            placeholder='약재 이름'
           />
           <TextInput
             disabled={herbList.length === 0}
@@ -104,14 +104,29 @@ function App() {
             placeholder='용량'
           />
         </InputSection>
+        <HerbItem isTitle>
+          <span>약재이름</span>
+          <span>단가</span>
+        </HerbItem>
         <HerbListSection>
-          {searchItem.map((item) => {
-            return (
-              <span key={item.id}>
-                {item.name} {item.unitPrice}
-              </span>
-            );
-          })}
+          {searchItem.length > 0 &&
+            searchItem.map((item) => {
+              return (
+                <HerbItem isTitle={false} key={item.id}>
+                  <span>{item.name}</span>
+                  <span>{convertNumberFormat(item.unitPrice)}</span>
+                </HerbItem>
+              );
+            })}
+          {searchItem.length === 0 &&
+            herbList.map((item) => {
+              return (
+                <HerbItem isTitle={false} key={item.id}>
+                  <span>{item.name}</span>
+                  <span>{convertNumberFormat(item.unitPrice)}</span>
+                </HerbItem>
+              );
+            })}
         </HerbListSection>
       </LeftSection>
       <RightSection>
@@ -233,12 +248,29 @@ const HerbListSection = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-
-  border-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
   box-shadow: 6px 10px 23px 0px rgba(0, 0, 0, 0.25);
 `;
 
-const HerbItem = styled.div``;
+const HerbItem = styled.div<{ isTitle: boolean }>`
+  display: flex;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  ${(props) => props.isTitle && `border-top-left-radius: 1rem`};
+  ${(props) => props.isTitle && `border-top-right-radius: 1rem`};
+  ${(props) => props.isTitle && `border-top-right-radius: 1rem`};
+  background-color: ${(props) => (props.isTitle ? '#f8f6f5' : '#ffffff')};
+  span:nth-child(1) {
+    width: 60%;
+    text-align: ${(props) => (props.isTitle ? 'center' : 'left')};
+  }
+
+  span:nth-child(2) {
+    width: 40%;
+    text-align: ${(props) => (props.isTitle ? 'center' : 'right')};
+  }
+`;
 
 const RightSection = styled(Section)`
   background: linear-gradient(
