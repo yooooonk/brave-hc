@@ -4,13 +4,13 @@ import { Herb } from './types';
 import { read, utils, WorkBook } from 'xlsx';
 
 export const makeDataList = async (file: Blob) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Herb[]>((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsBinaryString(file);
 
     reader.onload = () => {
-      var fileData = reader.result;
-      var wb = read(fileData, { type: 'binary' });
+      const fileData = reader.result;
+      const wb = read(fileData, { type: 'binary' });
 
       const sheetName = wb.SheetNames[0];
 

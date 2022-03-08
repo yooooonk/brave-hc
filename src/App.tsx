@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { mock, makeDataList } from './db';
 import { Herb, AddedHerb } from './types';
 
 function App() {
-  const [lists, setLists] = useState<Herb[]>([]);
+  const [herbList, setHerbList] = useState<Herb[]>([]);
+  const [searchItem, setSerachItem] = useState<Herb[]>([]);
   const [addLists, setAddLists] = useState<AddedHerb[]>([]);
   const [sumPrice, setSumPrice] = useState<number>(0);
 
   const searchItems = (e: React.FormEvent<HTMLInputElement>) => {
-    setLists(mock.filter((item) => item.name.includes(e.currentTarget.value)));
+    setSerachItem(herbList.filter((item) => item.name.includes(e.currentTarget.value)));
   };
 
   const enterWeight = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
 
-    if (lists.length === 0) return;
-    console.log(lists[0].name);
-    console.log(lists[0].unitPrice);
+    if (searchItem.length === 0) return;
+    console.log(searchItem[0].name);
+    console.log(searchItem[0].unitPrice);
 
-    const totalPrice = parseInt(e.currentTarget.value) * lists[0].unitPrice;
+    const totalPrice = parseInt(e.currentTarget.value) * searchItem[0].unitPrice;
     const newOrder: AddedHerb = {
-      ...lists[0],
+      ...searchItem[0],
       orderWeight: parseInt(e.currentTarget.value),
       totalPrice,
     };
 
     setAddLists([...addLists, newOrder]);
-    setSumPrice((prev) => prev + totalPrice);
   };
 
   const removeItem = (item: AddedHerb) => {
@@ -37,18 +37,21 @@ function App() {
     console.log(removedList);
 
     setAddLists(removedList);
-    setSumPrice((prev) => prev - item.totalPrice);
   };
-  //
-  // useEffect(() => {
-  //   const totalPrice = addLists.reduce((acc) => acc + item.totalPrice);
-  //   setSumPrice();
-  // }, [addLists]);
+
+  const calculateTotalPrice = (list: AddedHerb[]) => {
+    const totalPrice = list.reduce((acc, current) => acc + current.totalPrice, 0);
+    setSumPrice(totalPrice);
+  };
+  useEffect(() => {
+    calculateTotalPrice(addLists);
+  }, [addLists]);
 
   const handleFile = async (file: FileList | null) => {
     if (!file) return;
 
     const data = await makeDataList(file[0]);
+    setHerbList(data);
     console.log(data);
   };
   return (
@@ -65,8 +68,12 @@ function App() {
         <input type={'text'} onKeyUp={enterWeight} />
 
         <Lists>
-          {lists.map((item) => {
-            return <span key={item.id}>{item.name}</span>;
+          {searchItem.map((item) => {
+            return (
+              <span key={item.id}>
+                {item.name} {item.unitPrice}
+              </span>
+            );
           })}
         </Lists>
       </Section>
