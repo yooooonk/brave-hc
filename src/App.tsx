@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { makeDataList } from './db';
 import { Herb, AddedHerb } from './types';
 import { calculatePrice, convertNumberFormat } from './util';
 import { FcLock, FcLike } from 'react-icons/fc';
+import styled, { keyframes } from 'styled-components';
 
 function App() {
   const [herbList, setHerbList] = useState<Herb[]>([]);
@@ -165,14 +165,30 @@ const LeftSection = styled(Section)`
   height: 90%;
 `;
 
+const rotationAnimation = keyframes`
+  0% {transform: rotate(-5deg);}
+
+  25% {transform: rotate(5deg);}
+
+  50% {transform: rotate(-5deg);}
+  75% {transform: rotate(5deg);}
+  100% {transform: rotate(-5deg);}
+
+
+
+  
+
+`;
+
 const FileLabel = styled.label`
   background-color: #b45d7a;
   color: white;
   border-radius: 0.5rem;
-  height: 35px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
   text-align: center;
   box-shadow: 4px 6px 14px 1px rgba(0, 0, 0, 0.3);
-
   cursor: pointer;
   font-family: 'Gowun Batang', serif;
   font-size: 1.25rem;
@@ -180,6 +196,10 @@ const FileLabel = styled.label`
   justify-content: center;
   align-items: center;
   width: 100%;
+  transition: 0.3s all ease;
+  &:hover {
+    animation: ${rotationAnimation} 0.7s linear infinite;
+  }
 `;
 
 const InputSection = styled.div`
@@ -205,10 +225,10 @@ const HerbListSection = styled.div`
   height: 35rem;
   overflow-y: scroll;
 
-  &: {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+  /* &:: {
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+  } */
 
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
