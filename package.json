@@ -1,6 +1,7 @@
 {
   "name": "brave-hc",
   "version": "0.1.0",
+  "author": "yooooonk <gisele51.jo@gmail.com> (https://github.com/yooooonk)",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
@@ -27,7 +28,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "react-start": "set BROWSER=none && yarn start",
+    "electron-start": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "electron-pack": "yarn build && electron-builder build -c.extraMetadata.main=build/Main.js"
   },
   "eslintConfig": {
     "extends": [

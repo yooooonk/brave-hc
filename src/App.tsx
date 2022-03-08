@@ -77,17 +77,19 @@ function App() {
     <Container>
       <Section>
         <InputSection>
-          <button>약재 불러오기</button>
+          <FileButton htmlFor='input-file'>약재 불러오기</FileButton>
           <input
             type='file'
             accept='.xlsx, .xlsb, .xlsm, .xls, .xml'
             onChange={(e) => handleFile(e.currentTarget.files)}
+            id='input-file'
+            style={{ display: 'none' }}
           />
 
           <input type={'text'} onChange={searchItems} ref={nameInput} />
           <input type={'text'} onKeyUp={enterWeight} ref={weightInput} />
         </InputSection>
-        <Lists>
+        <HerbListSection>
           {searchItem.map((item) => {
             return (
               <span key={item.id}>
@@ -95,7 +97,7 @@ function App() {
               </span>
             );
           })}
-        </Lists>
+        </HerbListSection>
       </Section>
       <RightSection>
         <TotalPriceCard>
@@ -143,6 +145,21 @@ const Section = styled.section`
   flex-direction: column;
 `;
 
+const HerbListSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+`;
+
+const InputSection = styled.div``;
+
+const FileButton = styled.label`
+  background-color: #d2cdb6;
+  color: white;
+  border-radius: 1rem;
+  width: 900px;
+`;
+
 const RightSection = styled(Section)`
   background: linear-gradient(
     90deg,
@@ -158,14 +175,6 @@ const RightSection = styled(Section)`
   overflow: hidden;
   box-shadow: 6px 10px 23px 0px rgba(0, 0, 0, 0.25);
 `;
-
-const Lists = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-`;
-
-const InputSection = styled.div``;
 
 const TotalPriceCard = styled.div`
   width: 100%;
@@ -196,6 +205,7 @@ const Bill = styled.div`
   height: 100%;
   overflow-y: scroll;
 `;
+
 const BillItem = styled.div`
   background-color: white;
   border-radius: 0.5rem;
