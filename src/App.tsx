@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { makeDataList } from './db';
 import { Herb, AddedHerb } from './types';
 import { calculatePrice, convertNumberFormat } from './util';
-import { FcLock, FcLike } from 'react-icons/fc';
+import { FcLock, FcLike, FcDeleteDatabase } from 'react-icons/fc';
 import styled, { keyframes } from 'styled-components';
 
 function App() {
@@ -69,6 +69,10 @@ function App() {
     setSumPrice(totalPrice);
   };
 
+  const resetAddList = () => {
+    setAddLists([]);
+  };
+
   useEffect(() => {
     sumTotalPrice(addLists);
   }, [addLists]);
@@ -79,7 +83,6 @@ function App() {
         <FileLabel htmlFor='input-file'>
           Load Data {herbList.length === 0 ? <FcLock /> : <FcLike />}
         </FileLabel>
-
         <input
           type='file'
           accept='.xlsx, .xlsb, .xlsm, .xls, .xml'
@@ -134,6 +137,8 @@ function App() {
           <span>₩ {convertNumberFormat(sumPrice)}원</span>
           <span>{addLists.length}건</span>
         </TotalPriceCard>
+        {addLists.length > 0 && <Can onClick={() => resetAddList()} />}
+
         <Bill>
           {addLists.map((item) => {
             return (
@@ -270,6 +275,8 @@ const HerbItem = styled.div<{ isTitle: boolean }>`
     width: 40%;
     text-align: ${(props) => (props.isTitle ? 'center' : 'right')};
   }
+  color: #3e5567;
+  font-family: 'Gowun Batang', serif;
 `;
 
 const RightSection = styled(Section)`
@@ -309,6 +316,18 @@ const TotalPriceCard = styled.div`
   }
 `;
 
+const Can = styled(FcDeleteDatabase)`
+  font-size: 2.5rem;
+  position: relative;
+  top: 10px;
+  left: 44%;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
 const Bill = styled.div`
   display: flex;
   flex-direction: column;
@@ -326,7 +345,7 @@ const BillItem = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
-  margin: 0.5rem;
+  margin: 0.25rem;
   transition: 0.3s all ease;
   &:hover {
     background-color: rgba(226, 222, 214, 0.5);
@@ -334,7 +353,7 @@ const BillItem = styled.div`
 `;
 
 const Name = styled.span`
-  font-size: 1.25rem;
+  font-size: 18px;
   font-family: 'Gowun Batang', serif;
 `;
 
