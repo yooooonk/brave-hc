@@ -46,5 +46,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "electron": "^17.1.1",
+    "electron-builder": "^22.14.13"
+  },
+  "main": "public/Main.js",
+  "homepage": "./"
 }
