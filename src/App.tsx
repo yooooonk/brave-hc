@@ -33,6 +33,12 @@ function App() {
       ...orderData,
     };
 
+    const idx = addLists.findIndex((item) => item.id === newOrder.id);
+
+    if (idx > -1) {
+      addLists.splice(idx, 1);
+    }
+
     setAddLists([newOrder, ...addLists]);
   };
   const resetInput = () => {
