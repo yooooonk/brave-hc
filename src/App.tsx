@@ -150,14 +150,13 @@ const RightSection = styled(Section)`
     rgba(248, 246, 245, 1) 50%,
     rgba(248, 246, 245, 1) 100%
   );
-  width: 60%;
+  width: 50%;
   border-radius: 3rem;
   height: 90%;
   align-self: center;
   justify-self: center;
   overflow: hidden;
   box-shadow: 6px 10px 23px 0px rgba(0, 0, 0, 0.25);
-  transition: 1s all ease;
 `;
 
 const Lists = styled.div`
@@ -199,20 +198,21 @@ const Bill = styled.div`
 `;
 const BillItem = styled.div`
   background-color: white;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
   margin: 0.5rem;
+  transition: 0.3s all ease;
   &:hover {
     background-color: rgba(226, 222, 214, 0.5);
   }
 `;
 
 const Name = styled.span`
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-family: 'Gowun Batang', serif;
 `;
 
