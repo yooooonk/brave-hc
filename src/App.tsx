@@ -24,6 +24,9 @@ function App() {
 
   // TODO : lodash 이용하기
   const searchItems = (e: React.FormEvent<HTMLInputElement>) => {
+    herbList.filter((item) => {
+      return item.name.includes(e.currentTarget.value);
+    });
     setSearchItem(herbList.filter((item) => item.name.includes(e.currentTarget.value)));
   };
 
@@ -44,6 +47,7 @@ function App() {
   const resetInput = () => {
     if (nameInput.current) {
       nameInput.current.value = '';
+      nameInput.current.focus();
     }
 
     if (weightInput.current) {
